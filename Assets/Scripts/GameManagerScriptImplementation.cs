@@ -26,7 +26,31 @@ public class GameManagerScriptImplementation : GameManagerScript
                 calculateVerocity = false;
             }
         }
+
+        //MoveGround();
 	}
+
+    bool movedown = true;
+    void MoveGround()
+    {
+        if(movedown)
+        {
+            GameObject.Find("Ground").transform.position = GameObject.Find("Ground").transform.position - new Vector3(0, 1.0f, 0);
+            if(GameObject.Find("Ground").transform.position.y < -1.0f)
+            {
+                movedown = false;
+            }
+        }
+        else
+        {
+            GameObject.Find("Ground").transform.position = GameObject.Find("Ground").transform.position + new Vector3(0, 1.0f, 0);
+            if (GameObject.Find("Ground").transform.position.y > 1.0f)
+            {
+                movedown = true;
+            }
+        }
+    }
+
     void SetTurn()
     {
         if (playerOneTurn)
@@ -44,7 +68,7 @@ public class GameManagerScriptImplementation : GameManagerScript
 
     bool DummyVerocityZero()
     {
-        return true;
+        return player0.IsRigidbodyVelocityZero() && player1.IsRigidbodyVelocityZero();
     }
 
     public override void PlayerShoot()
@@ -60,11 +84,13 @@ public class GameManagerScriptImplementation : GameManagerScript
 
             if(playerNum == 0)
             {
-                Debug.Log("2PWon");
+                //Debug.Log("2PWon");
+                GameObject.Find("Text").GetComponent<UnityEngine.UI.Text>().text = "2PWon";
             }
             else
             {
-                Debug.Log("1PWon");
+                //Debug.Log("1PWon");
+                GameObject.Find("Text").GetComponent<UnityEngine.UI.Text>().text = "1PWon";
             }
         }
     }
