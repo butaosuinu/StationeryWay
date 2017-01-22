@@ -10,6 +10,9 @@ public class GameManagerScriptImplementation : GameManagerScript
     bool calculateVerocity = false;
 
     bool gameEnd = false;
+
+    GameObject camera1;
+    GameObject camera2;
     // Use this for initialization
     [SerializeField]
     GameObject flat_ground, restart;
@@ -18,7 +21,11 @@ public class GameManagerScriptImplementation : GameManagerScript
 		if (Application.loadedLevelName != "Menu" && Application.loadedLevelName != "Guide") {
 			player0 = GameObject.Find ("Player0").GetComponent<PlayerScript> ();
 			player1 = GameObject.Find ("Player1").GetComponent<PlayerScript> ();
-			if(!flat_ground.activeSelf)
+
+            camera1 = GameObject.Find("MainCamera");
+            camera2 = GameObject.Find("MainCamera2");
+
+            if (!flat_ground.activeSelf)
 			{
 				CreateGroundBoards();
 			}
@@ -40,7 +47,22 @@ public class GameManagerScriptImplementation : GameManagerScript
 
     // Update is called once per frame
     void Update () {
-		if(calculateVerocity)
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            if (camera1.GetComponent<Camera>().enabled)
+            {
+                camera1.GetComponent<Camera>().enabled = false;
+                camera2.GetComponent<Camera>().enabled = true;
+            }
+            else
+            {
+                camera2.GetComponent<Camera>().enabled = false;
+                camera1.GetComponent<Camera>().enabled = true;
+            }
+        }
+
+        if (calculateVerocity)
         {
             if(DummyVerocityZero())
             {
