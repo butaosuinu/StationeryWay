@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 92910290831c9eb48a8f9e34676f3321
-timeCreated: 1484997827
+timeCreated: 1485058237
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -13,8 +13,10 @@ ModelImporter:
     400004: Plane
     2300000: paper
     2300002: Plane
+    2300004: //RootNode
     3300000: paper
     3300002: Plane
+    3300004: //RootNode
     4300000: Plane
     4300002: paper
   materials:

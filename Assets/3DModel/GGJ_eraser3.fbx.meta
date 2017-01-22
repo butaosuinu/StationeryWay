@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 9eef9c65c18dd644f9ee59213fa39957
-timeCreated: 1484997827
+timeCreated: 1485058237
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -19,10 +19,12 @@ ModelImporter:
     2300002: eraser2
     2300004: eraser3
     2300006: eraser4
+    2300008: //RootNode
     3300000: eraser
     3300002: eraser2
     3300004: eraser3
     3300006: eraser4
+    3300008: //RootNode
     4300000: eraser4
     4300002: eraser
     4300004: eraser3

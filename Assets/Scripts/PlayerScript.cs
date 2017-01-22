@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
     [SerializeField]
-    private int playerNum;
+    public int playerNum;
 
     [SerializeField]
     private float maxSpeed;
@@ -26,10 +26,13 @@ public class PlayerScript : MonoBehaviour {
 
     [SerializeField]
     GameObject arrow;
-
+    
     Slider slider;
     bool slider_direction_right = true;
     // Use this for initialization
+    [SerializeField]
+    AudioSource shootSound, chargeSound,falldownSound;
+
     void Start() {
         rigid = GetComponent<Rigidbody>();
         manager = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
@@ -41,6 +44,8 @@ public class PlayerScript : MonoBehaviour {
         powerTimer = 0;
         getDirection();*/
         SetPlayerActivate(playerNum == 0 ? true : false);
+
+        //GetComponent<PlayerOilDrop>().OilDropOn();
     }
 	
 	// Update is called once per frame
@@ -55,6 +60,7 @@ public class PlayerScript : MonoBehaviour {
                     powerTimer = 0;
                     turnPhase++;
                     arrow.SetActive(false);
+                    SetChargeSound();
                 }
 
                 //Rotation with left/right button
@@ -78,26 +84,31 @@ public class PlayerScript : MonoBehaviour {
             {
                 if(slider_direction_right)
                 {
-                    slider.value += 1.0f / 60.0f;
-                    if(slider.value >= 1.0f)
+                    slider.value += (1.0f / 0.601f) / 60.0f;
+                    //slider.value += 0.601f / 60.0f;
+                    if (slider.value >= 1.0f)
                     {
                         slider_direction_right = false;
                         slider.value = 1.0f;
+                        SetChargeSound();
                     }
                 }
                 else
                 {
-                    slider.value -= 1.0f / 60.0f;
+                    slider.value -= (1.0f / 0.601f) / 60.0f;
+                    //slider.value -= 0.601f / 60.0f;
                     if (slider.value <= 0.0f)
                     {
                         slider_direction_right = true;
                         slider.value = 0.0f;
+                        SetChargeSound();
                     }
                 }
 
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     turnPhase++;
+                    shootSound.Play();
                 }
                 /*powerTimer++;
                 if(Input.GetKeyUp(KeyCode.Space))
@@ -138,13 +149,40 @@ public class PlayerScript : MonoBehaviour {
         }
 
         CheckGameEnd();
-	}
+
+        CheckFallDownSoundPlay();
+
+        /*if(Input.GetKeyDown(KeyCode.A))
+        {
+            GetComponent<PlayerFriction>().SetLargeFriction();
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            GetComponent<PlayerFriction>().SetSmallFriction();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            GetComponent<PlayerPowerUp>().PowerUpOn();
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            GetComponent<PlayerOilDrop>().OilDropOn();
+        }*/
+    }
 
     void CheckGameEnd()
     {
         if(transform.position.y <= -5.0f)
         {
             manager.GameEnd(playerNum);
+        }
+    }
+
+    void CheckFallDownSoundPlay()
+    {
+        if(!falldownSound.isPlaying && transform.position.y <= -3.0f)
+        {
+            falldownSound.Play();
         }
     }
 
@@ -190,6 +228,24 @@ public class PlayerScript : MonoBehaviour {
             turnPhase = 0;
             getDirection();
             arrow.SetActive(false);
+        }
+        slider.value = 0;
+        slider_direction_right = true;
+    }
+
+    void SetChargeSound()
+    {
+        if(slider_direction_right)
+        {
+            chargeSound.Stop();
+            chargeSound.clip = (AudioClip)Resources.Load("Charge");
+            chargeSound.Play();
+        }
+        else
+        {
+            chargeSound.Stop();
+            chargeSound.clip = (AudioClip)Resources.Load("ChargeInverted");
+            chargeSound.Play();
         }
     }
 }
