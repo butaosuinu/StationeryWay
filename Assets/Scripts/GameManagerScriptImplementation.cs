@@ -15,13 +15,14 @@ public class GameManagerScriptImplementation : GameManagerScript
     GameObject flat_ground, restart;
 
 	void Start () {
-        player0 = GameObject.Find("Player0").GetComponent<PlayerScript>();
-        player1 = GameObject.Find("Player1").GetComponent<PlayerScript>();
-
-        if(!flat_ground.activeSelf)
-        {
-            CreateGroundBoards();
-        }
+		if (Application.loadedLevelName != "Menu" && Application.loadedLevelName != "Guide") {
+			player0 = GameObject.Find ("Player0").GetComponent<PlayerScript> ();
+			player1 = GameObject.Find ("Player1").GetComponent<PlayerScript> ();
+			if(!flat_ground.activeSelf)
+			{
+				CreateGroundBoards();
+			}
+		}
     }
 
     void CreateGroundBoards()
@@ -59,6 +60,14 @@ public class GameManagerScriptImplementation : GameManagerScript
         {
             SceneManager.LoadScene("Main2");
         }
+
+		if (Input.GetKeyDown (KeyCode.G) && Application.loadedLevelName == "Menu") {
+			SceneManager.LoadScene ("Guide");
+		}
+
+		if (Input.GetKeyDown (KeyCode.R) && Application.loadedLevelName == "Guide"){
+			SceneManager.LoadScene ("Menu");
+		}
 	}
 
     bool movedown = true;
@@ -112,28 +121,24 @@ public class GameManagerScriptImplementation : GameManagerScript
 
     public override void GameEnd(int playerNum)
     {
-        if(!gameEnd)
-        {
-            gameEnd = true;
+		if (!gameEnd) {
+			gameEnd = true;
 
-            if(playerNum == 0)
-            {
-                //Debug.Log("2PWon");
-                GameObject.Find("Text").GetComponent<UnityEngine.UI.Text>().text = "2PWon";
-            }
-            else
-            {
-                //Debug.Log("1PWon");
-                GameObject.Find("Text").GetComponent<UnityEngine.UI.Text>().text = "1PWon";
-            }
+			if (playerNum == 0) {
+				//Debug.Log("2PWon");
+				GameObject.Find ("Text").GetComponent<UnityEngine.UI.Text> ().text = "2PWon";
+			} else {
+				//Debug.Log("1PWon");
+				GameObject.Find ("Text").GetComponent<UnityEngine.UI.Text> ().text = "1PWon";
+			}
 
-            restart.SetActive(true);
+			restart.SetActive (true);
             
-        }
-        else　if (Input.GetKeyDown(KeyCode.R))
-            if(Application.loadedLevelName == "Main")
-                SceneManager.LoadScene("Main");
-            else
-                SceneManager.LoadScene("Main2");
+		} else if (Input.GetKeyDown (KeyCode.R))
+			SceneManager.LoadScene ("Menu");
+//            if(Application.loadedLevelName == "Main")
+//                SceneManager.LoadScene("Main");
+//            else
+//                SceneManager.LoadScene("Main2");
     }
 }
